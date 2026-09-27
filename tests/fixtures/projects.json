@@ -1,0 +1,35 @@
+[
+ {
+  "id": "5164be8ed41112e08c1b8baf",
+  "name": "Texto 001",
+  "sortOrder": -131072,
+  "closed": false,
+  "viewMode": "list",
+  "permission": "write",
+  "kind": "TASK"
+ },
+ {
+  "id": "795ef67b27f7b87a87595a12",
+  "name": "Texto 002",
+  "sortOrder": -196608,
+  "closed": false,
+  "viewMode": "list",
+  "permission": "write",
+  "kind": "TASK"
+ },
+ {
+  "id": "c030c2c158abb3f7e4f68ba9",
+  "name": "Texto 003",
+  "sortOrder": 6597069570048,
+  "viewMode": "list"
+ },
+ {
+  "id": "d8586e4df9de0d9e696f6c0c",
+  "name": "Texto 004",
+  "color": "transparent",
+  "sortOrder": -268632064,
+  "groupId": "0654a028e5aea48c8fbb0987",
+  "viewMode": "list",
+  "kind": "NOTE"
+ }
+]

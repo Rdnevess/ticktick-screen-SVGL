@@ -1,0 +1,22 @@
+# Build artifacts (arduino-cli)
+build/
+*.bin
+*.elf
+*.map
+
+# Segredos de pareamento — nunca versionar
+secrets.h
+.env
+helper/.env
+
+# Sistema
+.DS_Store
+Thumbs.db
+
+# Cache de bytecode do Python
+__pycache__/
+
+# Logo do TickTick (marca de terceiros): gerado localmente por tools/logo2c.py
+assets-local/
+firmware/ticktick_screen/src/assets/logo_ticktick.c
+firmware/ticktick_screen/src/assets/logo_ticktick.h
