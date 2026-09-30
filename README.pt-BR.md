@@ -144,6 +144,24 @@ tests/       testes de host em C++ (core/) e testes em Python (helper/, tools/)
 docs/        especificações, notas de hardware e as capturas em docs/images/
 ```
 
+## Créditos
+
+Este projeto usou como base o
+[claude-usage-stick-SVGL](https://github.com/benevid/claude-usage-stick-SVGL), de
+[@benevid](https://github.com/benevid), que por sua vez é um fork do
+[claude-usage-stick](https://github.com/oauramos/claude-usage-stick) original, de
+[@oauramos](https://github.com/oauramos). O firmware deles roda na mesma placa e serviu
+de referência para colocá-la em funcionamento.
+
+Partes adaptadas:
+- o sketch de bring-up (`firmware/bringup/`: configuração da placa, driver de toque,
+  `lv_conf.h`)
+- o gerenciador de Wi-Fi (`src/platform/wifi_manager.h`)
+- a derivação de chave a partir do PIN (`src/net/crypto.h`)
+- os níveis de brilho do display (`src/platform/display.cpp`)
+
+Obrigado a todos os contribuidores desses projetos.
+
 ## Licença
 
 [MIT](LICENSE). Este projeto não é afiliado nem endossado pelo TickTick.
