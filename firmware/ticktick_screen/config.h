@@ -3,7 +3,6 @@
 
 // ============================================================
 // TickTick Screen — Guition JC4832W535 (ESP32-S3, AXS15231B)
-// Pinos: ver docs/REFERENCIA-HARDWARE-LVGL.md (bring-up validado)
 // ============================================================
 
 #define FW_VERSION "0.1"
@@ -56,7 +55,7 @@
 
 // ── TickTick ─────────────────────────────────────────────
 // A Entrada nao aparece em GET /project; GET /project/inbox/data foi testado
-// na captura do Plano B (tests/fixtures/CAPTURA.txt): HTTP 200.
+// e responde HTTP 200.
 #define INBOX_SUPPORTED 1
 
 // ── Rede ─────────────────────────────────────────────────

@@ -71,15 +71,6 @@ To show it centered in the header, save the icon as a white-background PNG in `a
 (git-ignored) and run `python tools/logo2c.py assets-local/<icon>.png --size 28 --out firmware/ticktick_screen/src/assets`.
 Without the generated files the firmware builds normally, with no logo.
 
-## Tests
-
-Two independent host-side suites, no board required:
-
-```bash
-bash tests/run.sh                                   # core/ in C++ (g++/clang++, or MSVC on Windows)
-python -m unittest discover -s tests/helper -v       # helper/pair.py and tools/shot2png.py
-```
-
 ## Pairing
 
 1. Register an app at the [TickTick developer center](https://developer.ticktick.com) with
@@ -125,15 +116,14 @@ The device exposes a command console over the USB serial port (`tools/console.sh
 | `poll <min>` | sets the refresh interval |
 | `tls cadeia\|inseguro` | sets certificate validation on/off |
 
-Screenshots for this README are produced by `tools/capture_readme.sh`, which drives the
-console through demo mode in both languages and converts the output with `tools/shot2png.py`.
+`tools/shot2png.py` turns the output of `shot` into PNG files.
 
 ## Project layout
 
 ```
 firmware/ticktick_screen/src/
   core/      pure C++, no Arduino/LVGL/WiFi — task filtering & sorting, clock formatting,
-             settings value steps, payload parsing — tested on the PC (tests/run.sh)
+             settings value steps, payload parsing
   platform/  hardware-facing code — display driver, clock, serial console, NVS settings,
              screenshot capture
   net/       HTTP/TLS client, TickTick API calls, OAuth token storage, JSON payload policy
@@ -141,9 +131,8 @@ firmware/ticktick_screen/src/
              command wiring
   ui/        LVGL screens, shell (header/nav), theme, i18n
 helper/      pair.py, a one-shot desktop OAuth pairing tool
-tools/       build/flash script, serial console, font generator, screenshot tools
-tests/       host-side C++ tests (core/) and Python tests (helper/, tools/)
-docs/        specs, hardware notes, and the screenshots in docs/images/
+tools/       serial console, font generator, logo converter, screenshot converter
+docs/images/ the screenshots in this README
 ```
 
 ## Credits
@@ -156,7 +145,7 @@ This project is based on
 the reference for bringing it up.
 
 Adapted from it:
-- the bring-up sketch (`firmware/bringup/`: board config, touch driver, `lv_conf.h`)
+- the board config, touch driver and LVGL config (`config.h`, `src/platform/touch.h`, `lv_conf.h`)
 - the Wi-Fi manager (`src/platform/wifi_manager.h`)
 - the PIN-based key derivation (`src/net/crypto.h`)
 - the display brightness levels (`src/platform/display.cpp`)

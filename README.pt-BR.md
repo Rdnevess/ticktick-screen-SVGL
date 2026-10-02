@@ -73,15 +73,6 @@ repositório. Para mostrá-lo centralizado no header, salve o ícone em PNG com 
 `assets-local/` (ignorada pelo git) e rode `python tools/logo2c.py assets-local/<ícone>.png --size 28 --out firmware/ticktick_screen/src/assets`.
 Sem os arquivos gerados, o firmware compila normalmente, sem o logo.
 
-## Testes
-
-Duas suítes independentes, rodadas no PC, sem placa nenhuma envolvida:
-
-```bash
-bash tests/run.sh                                   # core/ em C++ (g++/clang++, ou MSVC no Windows)
-python -m unittest discover -s tests/helper -v       # helper/pair.py e tools/shot2png.py
-```
-
 ## Pareamento
 
 1. Cadastre um app no [centro de desenvolvedores do TickTick](https://developer.ticktick.com)
@@ -127,16 +118,14 @@ O aparelho expõe um console de comandos pela porta serial USB (`tools/console.s
 | `poll <min>` | define o intervalo de atualização |
 | `tls cadeia\|inseguro` | liga/desliga a validação do certificado |
 
-As capturas deste README saem de `tools/capture_readme.sh`, que conduz o console pelo modo
-demonstração nos dois idiomas e converte a saída com `tools/shot2png.py`.
+O `tools/shot2png.py` converte a saída do `shot` em arquivos PNG.
 
 ## Estrutura do projeto
 
 ```
 firmware/ticktick_screen/src/
   core/      C++ puro, sem Arduino/LVGL/WiFi — filtragem e ordenação de tarefas, formatação
-             de hora, passos de valores de configuração, leitura do payload — testado no PC
-             (tests/run.sh)
+             de hora, passos de valores de configuração, leitura do payload
   platform/  código ligado ao hardware — driver do display, relógio, console serial,
              configurações na NVS, captura de tela
   net/       cliente HTTP/TLS, chamadas à API do TickTick, guarda dos tokens OAuth, política
@@ -145,9 +134,8 @@ firmware/ticktick_screen/src/
              pomodoro, ligação dos comandos do console
   ui/        telas LVGL, shell (cabeçalho/navegação), tema, i18n
 helper/      pair.py, ferramenta de pareamento OAuth de uso único no desktop
-tools/       script de build/gravação, console serial, gerador de fontes, ferramentas de captura
-tests/       testes de host em C++ (core/) e testes em Python (helper/, tools/)
-docs/        especificações, notas de hardware e as capturas em docs/images/
+tools/       console serial, gerador de fontes, conversor do logo, conversor das capturas
+docs/images/ as capturas deste README
 ```
 
 ## Créditos
@@ -160,8 +148,8 @@ Este projeto usou como base o
 de referência para colocá-la em funcionamento.
 
 Partes adaptadas:
-- o sketch de bring-up (`firmware/bringup/`: configuração da placa, driver de toque,
-  `lv_conf.h`)
+- a configuração da placa, o driver de toque e a configuração do LVGL (`config.h`,
+  `src/platform/touch.h`, `lv_conf.h`)
 - o gerenciador de Wi-Fi (`src/platform/wifi_manager.h`)
 - a derivação de chave a partir do PIN (`src/net/crypto.h`)
 - os níveis de brilho do display (`src/platform/display.cpp`)

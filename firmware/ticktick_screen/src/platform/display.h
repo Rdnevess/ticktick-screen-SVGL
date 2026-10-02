@@ -1,6 +1,6 @@
 // Camada de display: QSPI + Canvas + LVGL + touch.
 //
-// Encapsula a receita validada (docs/REFERENCIA-HARDWARE-LVGL.md): Canvas com
+// Encapsula a receita validada: Canvas com
 // rotation=0 e rotacao manual 270 CW no flush. Trocar isso da cores erradas.
 #ifndef PLATFORM_DISPLAY_H
 #define PLATFORM_DISPLAY_H

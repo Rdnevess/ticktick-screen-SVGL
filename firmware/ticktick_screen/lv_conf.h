@@ -15,7 +15,7 @@
 #endif
 
 #define LV_COLOR_DEPTH 16
-/* Sem troca de bytes: o flush copia RGB565 direto (ver docs/REFERENCIA-HARDWARE-LVGL.md). */
+/* Sem troca de bytes: o flush copia RGB565 direto. */
 
 #define LV_USE_STDLIB_MALLOC   LV_STDLIB_BUILTIN
 #define LV_USE_STDLIB_STRING   LV_STDLIB_BUILTIN
