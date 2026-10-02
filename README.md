@@ -25,12 +25,17 @@ A desk display for your TickTick day, on a 3.5" ESP32-S3 touch screen.
 - **Status**: network and signal, clock and time zone, last refresh, selected lists, pairing
   token state, portal address, firmware version and free memory, plus **Refresh now** and
   **Open portal** buttons.
-- **Clock**: tap the time in the header to open a full-screen clock with the date.
-- **Pomodoro per task**: start a cycle from Focus or Today's action sheet; the day counter in
-  the header is replaced by the countdown while it runs; tapping it expands to a full-screen
-  overlay. At the end: **Renew · Cancel · Complete**.
-- **Settings** (gear icon): language, time zone, refresh interval, pomodoro length, lists for
-  the day, WiFi network, PIN, certificate verification, and factory reset.
+- **Clock**: tap the time in the header to open a full-screen clock with the date. It is also
+  the screensaver: after 30 minutes without a touch on the main screens it opens by itself
+  (never while a pomodoro is running or its end dialog is open), and it shifts a few pixels
+  every minute to avoid burn-in. Any tap goes back.
+- **Pomodoro per task**: start a cycle from Focus or Today's action sheet and the full-screen
+  countdown opens; tap outside the buttons to collapse it. While it runs, the day counter in
+  the header is replaced by the countdown; tapping it expands the full-screen view again.
+  At the end: **Renew · Cancel · Complete**.
+- **Settings** (gear icon): language, time zone, refresh interval, pomodoro length,
+  brightness, clock screensaver on/off, lists for the day, WiFi network, PIN, certificate
+  verification, and factory reset.
 - **Offline behavior**: if a refresh fails, the screen keeps the last data it had and shows a
   small "stale" badge in the header instead of freezing or going blank.
 
@@ -114,6 +119,7 @@ The device exposes a command console over the USB serial port (`tools/console.sh
 | `refresh` | fetches today's tasks now |
 | `mem` | free memory (LVGL, internal RAM, PSRAM) |
 | `demo on\|off` | loads/clears the demo tasks used for screenshots |
+| `descanso on\|off\|<sec>` | turns the clock screensaver on/off, or shortens its delay for testing (0 = 30 min) |
 | `shot <name>` | sends the current frame over serial as a PNG-ready block |
 | `lang pt\|en` | switches the UI language |
 | `poll <min>` | sets the refresh interval |

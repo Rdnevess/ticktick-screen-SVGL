@@ -26,12 +26,17 @@ sai do aparelho.)*
 - **Status**: rede e sinal, hora e fuso, último refresh, listas selecionadas, estado do
   pareamento, endereço do portal, versão do firmware e memória livre, além dos botões
   **Atualizar agora** e **Abrir portal**.
-- **Relógio**: tocar na hora do cabeçalho abre um relógio em tela cheia, com a data.
-- **Pomodoro por tarefa**: inicia um ciclo pelo Foco ou pela folha de ação do Hoje; o contador
-  do dia no cabeçalho vira a contagem regressiva enquanto o ciclo roda; tocar nela expande
-  para uma sobreposição em tela cheia. No fim: **Renovar · Cancelar · Concluir**.
+- **Relógio**: tocar na hora do cabeçalho abre um relógio em tela cheia, com a data. Ele também
+  é a tela de descanso: depois de 30 minutos sem toque nas telas principais ele abre sozinho
+  (nunca com um pomodoro rodando ou com o aviso de fim aberto) e se desloca alguns pixels a
+  cada minuto para não marcar a tela. Qualquer toque volta.
+- **Pomodoro por tarefa**: iniciar um ciclo pelo Foco ou pela folha de ação do Hoje abre a
+  contagem em tela cheia; tocar fora dos botões recolhe. Enquanto o ciclo roda, o contador do
+  dia no cabeçalho vira a contagem regressiva; tocar nela abre a tela cheia de novo.
+  No fim: **Renovar · Cancelar · Concluir**.
 - **Configurações** (ícone de engrenagem): idioma, fuso, intervalo de atualização, duração do
-  pomodoro, listas do dia, rede WiFi, PIN, verificação de certificado e reset de fábrica.
+  pomodoro, brilho, relógio em descanso (liga/desliga), listas do dia, rede WiFi, PIN,
+  verificação de certificado e reset de fábrica.
 - **Comportamento offline**: se um refresh falha, a tela mantém os últimos dados que tinha e
   mostra um selo "desatualizado" no cabeçalho, em vez de travar ou ficar em branco.
 
@@ -116,6 +121,7 @@ O aparelho expõe um console de comandos pela porta serial USB (`tools/console.s
 | `refresh` | busca as tarefas do dia agora |
 | `mem` | memória livre (LVGL, RAM interna, PSRAM) |
 | `demo on\|off` | carrega/limpa as tarefas de exemplo usadas nas capturas |
+| `descanso on\|off\|<seg>` | liga/desliga o relógio em descanso, ou encurta a espera para testar (0 = 30 min) |
 | `shot <nome>` | manda o quadro atual pela serial, pronto para virar PNG |
 | `lang pt\|en` | troca o idioma da interface |
 | `poll <min>` | define o intervalo de atualização |
