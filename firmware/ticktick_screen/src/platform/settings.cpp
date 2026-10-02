@@ -16,6 +16,7 @@ static void defaults(Settings &s) {
     s.tzMin = DEFAULT_TZ_MIN;
     s.tlsInsecure = false;
     s.briIdx = 1; // medio
+    s.idleClock = true;
 }
 
 // Pin na NVS: "projectId:taskId".
@@ -40,6 +41,7 @@ void settings_load() {
     s.tlsInsecure = p.getBool("tls", s.tlsInsecure);
     s.briIdx = p.getInt("bri", s.briIdx);
     if (s.briIdx < 0 || s.briIdx > 2) s.briIdx = 1;
+    s.idleClock = p.getBool("idle", s.idleClock);
 
     const String lists = p.getString("lists", "");
     int start = 0;
@@ -70,6 +72,7 @@ void settings_save() {
     p.putInt("tz", s.tzMin);
     p.putBool("tls", s.tlsInsecure);
     p.putInt("bri", s.briIdx);
+    p.putBool("idle", s.idleClock);
 
     String lists;
     for (int i = 0; i < s.listCount; i++) {

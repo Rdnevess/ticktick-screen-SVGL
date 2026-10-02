@@ -19,4 +19,12 @@ int weekday_from_days(int64_t days);
 // para caber em n (sempre termina em '\0') e devolve o tamanho escrito.
 size_t clock_long_date(int64_t localEpoch, bool en, char *out, size_t n);
 
+// Deslocamento da tela do relogio contra marcacao do painel: um passo de um
+// ciclo fixo a cada minuto (minuto pode ser negativo). Sempre dentro de
+// +-CLOCK_DRIFT_X / +-CLOCK_DRIFT_Y, nunca igual ao do minuto anterior.
+#define CLOCK_DRIFT_X 10
+#define CLOCK_DRIFT_Y 8
+#define CLOCK_DRIFT_PERIOD 12
+void clock_drift(int64_t minute, int *dx, int *dy);
+
 #endif // CORE_CLOCK_FORMAT_H

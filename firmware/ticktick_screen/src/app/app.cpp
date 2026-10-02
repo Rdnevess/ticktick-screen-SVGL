@@ -36,6 +36,7 @@ static Page s_next = Page::Boot;
 static bool s_switch = false;
 static bool s_wifiReady = false; // conectou ao menos uma vez neste boot
 static Page s_back = Page::Count; // para onde app_back() volta; Count = ninguem
+static uint32_t s_idleMs = (uint32_t)IDLE_CLOCK_MIN * 60 * 1000; // console "descanso" encurta
 
 void app_register(Page p, const PageOps &ops) { s_ops[(int)p] = ops; }
 
@@ -109,6 +110,16 @@ static void main_build(lv_obj_t *scr) {
     shell_build();
 }
 
+// Tela de descanso (opcao em Settings, ligada por padrao): na principal, sem toque por s_idleMs, abre o relogio (que
+// se desloca a cada minuto). Nunca com pomodoro rodando ou com o fim aberto. O
+// toque que volta do relogio zera o tempo de inatividade do LVGL.
+static void idle_tick() {
+    if (!settings().idleClock || s_page != Page::Main || s_switch) return;
+    if (pomo_app_state().state != PomoState::Idle) return;
+    if (lv_display_get_inactive_time(nullptr) < s_idleMs) return;
+    app_go(Page::Clock);
+}
+
 // ---- Console ----
 
 static void cmd_lang(const char *a) {
@@ -180,6 +191,19 @@ static void cmd_portal(const char *) {
 static void cmd_lists(const char *) {
     app_go(Page::Lists);
     Serial.println("selecao de listas aberta");
+}
+
+static void cmd_descanso(const char *a) {
+    if (std::strcmp(a, "on") == 0 || std::strcmp(a, "off") == 0) {
+        settings().idleClock = (a[1] == 'n'); // a mesma chave do Settings
+        settings_save();
+    } else if (*a) {
+        const long sec = std::strtol(a, nullptr, 10);
+        s_idleMs = sec > 0 ? (uint32_t)sec * 1000 : (uint32_t)IDLE_CLOCK_MIN * 60 * 1000;
+    }
+    Serial.printf("descanso: %s, apos %lu s sem toque (inativo ha %lu s)\n",
+                  settings().idleClock ? "ligado" : "desligado", (unsigned long)(s_idleMs / 1000),
+                  (unsigned long)(lv_display_get_inactive_time(nullptr) / 1000));
 }
 
 static void cmd_go(const char *a) {
@@ -266,6 +290,7 @@ void app_begin() {
     console_add("wififorget", "apaga as redes salvas e reinicia", cmd_wififorget);
     console_add("portal", "abre a pagina de pareamento", cmd_portal);
     console_add("lists", "abre a selecao de listas", cmd_lists);
+    console_add("descanso", "descanso on|off|[seg]  relogio sem toque (seg 0 = padrao)", cmd_descanso);
     console_add("go", "go foco|hoje|status|relogio|settings  navega sem tocar", cmd_go);
     screenshot_begin();
     page_pin_begin();
@@ -294,4 +319,5 @@ void app_loop() {
     apply_switch();
     if (s_ops[(int)s_page].tick) s_ops[(int)s_page].tick();
     pomo_app_tick(); // depois da pagina: a sobreposicao fica por cima dela
+    idle_tick();
 }

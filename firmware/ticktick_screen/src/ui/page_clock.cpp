@@ -12,6 +12,9 @@ static lv_obj_t *s_date = nullptr;
 static int64_t s_minute = -2; // minuto mostrado; -2 forca redesenho
 static bool s_backPending = false;
 
+static const int TIME_Y = -24; // posicao base; clock_drift soma o deslocamento
+static const int DATE_Y = 76;
+
 static void on_tap(lv_event_t *e) {
     (void)e;
     s_backPending = true; // a troca de pagina acontece no tick
@@ -29,6 +32,11 @@ static void refresh() {
     if (has) clock_long_date(now, lang_is_en(), buf, sizeof(buf));
     else buf[0] = '\0';
     lv_label_set_text(s_date, buf);
+    // Hora e data andam juntas alguns pixels a cada minuto (contra marcacao).
+    int dx = 0, dy = 0;
+    clock_drift(minute, &dx, &dy);
+    lv_obj_align(s_time, LV_ALIGN_CENTER, dx, TIME_Y + dy);
+    lv_obj_align(s_date, LV_ALIGN_CENTER, dx, DATE_Y + dy);
 }
 
 void page_clock_build(lv_obj_t *scr) {
@@ -44,10 +52,8 @@ void page_clock_build(lv_obj_t *scr) {
     lv_obj_add_event_cb(area, on_tap, LV_EVENT_CLICKED, nullptr);
 
     s_time = ui_label(area, "--:--", &font_clock_120, COL_TEXT);
-    lv_obj_align(s_time, LV_ALIGN_CENTER, 0, -24);
-    s_date = ui_label(area, "", &font_pt_24, COL_DIM);
-    lv_obj_align(s_date, LV_ALIGN_CENTER, 0, 76);
-
+        s_date = ui_label(area, "", &font_pt_24, COL_DIM);
+    
     s_minute = -2;
     s_backPending = false;
     refresh();

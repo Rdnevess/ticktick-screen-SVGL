@@ -8,7 +8,6 @@
 #include "../platform/clock.h"
 #include "../platform/console.h"
 #include "../platform/settings.h"
-#include "../ui/i18n.h"
 #include "../ui/pomo_overlay.h"
 #include "../ui/shell.h"
 #include "../ui/theme.h"
@@ -27,11 +26,8 @@ static int64_t duration_ms() { return (int64_t)settings().pomoMin * 60 * 1000; }
 
 static void start(const Task &t) {
     pomo_start(s_p, t, clock_uptime_ms(), duration_ms());
-    s_view = PomoView::None;
+    s_view = PomoView::Expanded; // abre a contagem; tocar fora dos botoes recolhe
     s_shownSec = -1;
-    char m[48];
-    snprintf(m, sizeof(m), TRS("Pomodoro de %d min", "%d-min pomodoro"), settings().pomoMin);
-    shell_toast(m);
 }
 
 void pomo_app_request_start(const Task &t) {

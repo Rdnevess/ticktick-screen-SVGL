@@ -25,6 +25,7 @@ enum class Ctl : uint8_t {
     BriLow, BriMid, BriHigh,
     // Task 6:
     Lists, Wifi, Repair, Pin, Tls, Reset, ResetYes, ResetNo,
+    IdleClock,
 };
 
 static lv_obj_t *s_list = nullptr;
@@ -36,6 +37,7 @@ static Ctl s_ctl = Ctl::None;
 static bool s_tzChanged = false;
 static lv_obj_t *s_tlsWarn = nullptr;
 static lv_obj_t *s_tlsSwitch = nullptr;
+static lv_obj_t *s_idleSwitch = nullptr;
 static lv_obj_t *s_confirm = nullptr; // "Apagar tudo e reiniciar?" no layer_top
 
 static void on_ctl(lv_event_t *e) { s_ctl = (Ctl)(intptr_t)lv_event_get_user_data(e); }
@@ -115,6 +117,11 @@ static void build_prefs(lv_obj_t *list) {
         s_briB[i] = small_button(bri, briTxt[i], COL_SURFACE, 76, BRI_CTL[i]);
         lv_obj_align(s_briB[i], LV_ALIGN_RIGHT_MID, -4 - (2 - i) * 82, 0);
     }
+    lv_obj_t *idle = row(list, TRS("Relógio em descanso", "Clock screensaver"));
+    s_idleSwitch = lv_switch_create(idle);
+    lv_obj_align(s_idleSwitch, LV_ALIGN_RIGHT_MID, -4, 0);
+    if (settings().idleClock) lv_obj_add_state(s_idleSwitch, LV_STATE_CHECKED);
+    lv_obj_add_event_cb(s_idleSwitch, on_ctl, LV_EVENT_VALUE_CHANGED, (void *)(intptr_t)Ctl::IdleClock);
     show_values();
 }
 
@@ -300,6 +307,10 @@ static void run(Ctl c) {
             net_set_tls_insecure(settings().tlsInsecure);
             show_tls();
             return;
+        case Ctl::IdleClock:
+            settings().idleClock = lv_obj_has_state(s_idleSwitch, LV_STATE_CHECKED);
+            settings_save(); // vale ja: idle_tick le a cada volta
+            return;
         case Ctl::Reset:    open_reset_confirm(); return;
         case Ctl::ResetYes: factory_reset(); return;
         case Ctl::ResetNo:
@@ -323,6 +334,6 @@ void page_settings_leave() {
     s_tzChanged = false;
     s_list = s_tzVal = s_pollVal = s_pomoVal = nullptr;
     s_briB[0] = s_briB[1] = s_briB[2] = nullptr;
-    s_tlsWarn = s_tlsSwitch = s_confirm = nullptr; // o layer_top e limpo pelo app
+    s_tlsWarn = s_tlsSwitch = s_idleSwitch = s_confirm = nullptr; // o layer_top e limpo pelo app
     s_ctl = Ctl::None;
 }

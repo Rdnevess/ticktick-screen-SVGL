@@ -46,6 +46,7 @@
 #define DEFAULT_POMO_MIN 25
 #define DEFAULT_TZ_MIN   (-180)   // UTC-3
 #define MAX_LISTS        16       // listas marcadas: cada uma e um GET por ciclo
+#define IDLE_CLOCK_MIN   30       // sem toque na principal: abre o relogio (descanso)
 
 // ── WiFi e hora ──────────────────────────────────────────
 #define NVS_WIFI                "wifi"

@@ -73,3 +73,16 @@ size_t clock_long_date(int64_t localEpoch, bool en, char *out, size_t n) {
     }
     return (size_t)w;
 }
+
+// Volta pelos quatro quadrantes em passos curtos; o ultimo emenda no primeiro.
+static const int8_t DRIFT[CLOCK_DRIFT_PERIOD][2] = {
+    {0, 0},  {6, -4},  {10, 2}, {4, 8},   {-4, 6},   {-10, 0},
+    {-6, -8}, {2, -6}, {8, 6},  {-2, 2},  {-8, 8},   {-2, -2},
+};
+
+void clock_drift(int64_t minute, int *dx, int *dy) {
+    int64_t i = minute % CLOCK_DRIFT_PERIOD;
+    if (i < 0) i += CLOCK_DRIFT_PERIOD;
+    *dx = DRIFT[i][0];
+    *dy = DRIFT[i][1];
+}

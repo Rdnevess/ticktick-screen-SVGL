@@ -15,6 +15,7 @@ struct Settings {
     int tzMin;        // fuso em minutos (UTC-3 = -180)
     bool tlsInsecure; // true = setInsecure() em vez da cadeia embutida (spec 6.5)
     int briIdx;       // brilho da tela: 0 baixo, 1 medio, 2 alto
+    bool idleClock;   // relogio como tela de descanso (app.cpp, idle_tick)
     int listCount;
     char lists[MAX_LISTS][TASK_ID_BYTES + 1];
     PinSet pins;
