@@ -39,6 +39,7 @@ static lv_obj_t *s_tlsWarn = nullptr;
 static lv_obj_t *s_tlsSwitch = nullptr;
 static lv_obj_t *s_idleSwitch = nullptr;
 static lv_obj_t *s_confirm = nullptr; // "Apagar tudo e reiniciar?" no layer_top
+static int s_scrollPx = 0;            // rolagem inicial pedida pelo console (uma vez)
 
 static void on_ctl(lv_event_t *e) { s_ctl = (Ctl)(intptr_t)lv_event_get_user_data(e); }
 
@@ -114,8 +115,9 @@ static void build_prefs(lv_obj_t *list) {
     static const Ctl BRI_CTL[3] = {Ctl::BriLow, Ctl::BriMid, Ctl::BriHigh};
     const char *briTxt[3] = {TRS("Baixo", "Low"), TRS("Médio", "Medium"), TRS("Alto", "High")};
     for (int i = 0; i < 3; i++) {
-        s_briB[i] = small_button(bri, briTxt[i], COL_SURFACE, 76, BRI_CTL[i]);
-        lv_obj_align(s_briB[i], LV_ALIGN_RIGHT_MID, -4 - (2 - i) * 82, 0);
+        s_briB[i] = small_button(bri, briTxt[i], COL_SURFACE, 100, BRI_CTL[i]);
+        lv_obj_set_style_pad_hor(s_briB[i], 0, 0); // "Medium" nao cabe com o padding padrao
+        lv_obj_align(s_briB[i], LV_ALIGN_RIGHT_MID, -4 - (2 - i) * 106, 0);
     }
     lv_obj_t *idle = row(list, TRS("Relógio em descanso", "Clock screensaver"));
     s_idleSwitch = lv_switch_create(idle);
@@ -258,8 +260,15 @@ void page_settings_build(lv_obj_t *scr) {
 
     build_prefs(s_list);
     build_account(s_list);
+    if (s_scrollPx > 0) {
+        lv_obj_update_layout(s_list);
+        lv_obj_scroll_to_y(s_list, s_scrollPx, LV_ANIM_OFF);
+        s_scrollPx = 0;
+    }
     s_ctl = Ctl::None;
 }
+
+void page_settings_set_scroll(int px) { s_scrollPx = px; }
 
 static void run(Ctl c) {
     switch (c) {

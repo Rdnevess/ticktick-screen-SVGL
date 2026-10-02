@@ -106,7 +106,7 @@ The device exposes a command console over the USB serial port (`tools/console.sh
 | Command | What it does |
 |---|---|
 | `pin <digits>` | unlocks the PIN screen from the serial port |
-| `go <screen>` | navigates without touching the screen |
+| `go <screen>` | navigates without touching the screen (`go settings <px>` opens it scrolled) |
 | `refresh` | fetches today's tasks now |
 | `mem` | free memory (LVGL, internal RAM, PSRAM) |
 | `demo on\|off` | loads/clears the demo tasks used for screenshots |

@@ -108,7 +108,7 @@ O aparelho expõe um console de comandos pela porta serial USB (`tools/console.s
 | Comando | O que faz |
 |---|---|
 | `pin <dígitos>` | desbloqueia a tela de PIN pela porta serial |
-| `go <tela>` | navega sem tocar na tela |
+| `go <tela>` | navega sem tocar na tela (`go settings <px>` já abre rolada) |
 | `refresh` | busca as tarefas do dia agora |
 | `mem` | memória livre (LVGL, RAM interna, PSRAM) |
 | `demo on\|off` | carrega/limpa as tarefas de exemplo usadas nas capturas |

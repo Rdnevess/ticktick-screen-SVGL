@@ -9,5 +9,7 @@
 void page_settings_build(lv_obj_t *scr);
 void page_settings_tick();
 void page_settings_leave();
+// Rolagem inicial da lista na proxima construcao (console "go settings <px>").
+void page_settings_set_scroll(int px);
 
 #endif // UI_PAGE_SETTINGS_H
